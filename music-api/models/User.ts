@@ -23,7 +23,7 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
   },
 });
 
-UserSchema.methods.checkPassword = function (password: string) {
+UserSchema.methods.checkPassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
@@ -32,7 +32,7 @@ UserSchema.methods.generateToken = function () {
 };
 
 UserSchema.pre('save', async function (next) {
-  if(this.isModified('password')) {
+  if(!this.isModified('password')) {
     return next();
   }
   const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
