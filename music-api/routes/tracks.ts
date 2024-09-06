@@ -3,6 +3,7 @@ import Track from '../models/Track';
 import {TrackWithoutId} from '../types';
 import Album from '../models/Album';
 import mongoose from 'mongoose';
+
 const tracksRouter = express.Router();
 
 tracksRouter.get('/', async (req, res, next) => {
@@ -19,7 +20,7 @@ tracksRouter.get('/', async (req, res, next) => {
       tracks = await Track.find({ album: { $in: albumIds } });
     }
     return res.send(tracks);
-  } catch (error) {``
+  } catch (error) {
     next(error);
   }
 });
