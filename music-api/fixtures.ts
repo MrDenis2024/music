@@ -4,6 +4,7 @@ import Artist from './models/Artist';
 import Album from './models/Album';
 import Track from './models/Track';
 import User from './models/User';
+import TrackHistory from './models/TrackHistory';
 
 const run = async () => {
   await mongoose.connect(config.database);
@@ -14,6 +15,7 @@ const run = async () => {
     await db.dropCollection('albums');
     await db.dropCollection('tracks');
     await db.dropCollection('users');
+    await db.dropCollection('trackhistories');
   } catch (error) {
     console.log('Skipping drop...');
   }
@@ -45,7 +47,7 @@ const run = async () => {
     image: 'fixtures/back.jpeg',
   });
 
-  await Track.create({
+  const [mockingbird] =await Track.create({
     name: 'Mockingbird',
     album: encore,
     duration: '4:11',
@@ -65,6 +67,13 @@ const run = async () => {
   });
   user.generateToken();
   await user.save();
+
+  const track = new TrackHistory({
+    user: user._id,
+    track: mockingbird,
+    datetime: new Date(),
+  });
+  await track.save();
 
   await db.close();
 };
