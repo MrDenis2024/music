@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 import User from '../models/User';
 import TrackHistory from '../models/TrackHistory';
 
-const privateRouter = express.Router();
+const trackHistoryRouter = express.Router();
 
-privateRouter.post('/track_history', async (req, res, next) => {
+trackHistoryRouter.post('/track_history', async (req, res, next) => {
   try {
     const headerValue = req.get('Authorization');
 
@@ -42,4 +42,4 @@ privateRouter.post('/track_history', async (req, res, next) => {
   }
 })
 
-export default privateRouter;
+export default trackHistoryRouter;

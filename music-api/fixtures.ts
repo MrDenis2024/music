@@ -30,35 +30,128 @@ const run = async () => {
     information: 'AC/DC (Эй-си/ди-си; сокращённо от англ. alternating current/direct current «переменный ток/постоянный ток») — австралийская рок-группа, сформированная в Сиднее в ноябре 1973 года выходцами из Шотландии, братьями Малькольмом и Ангусом Янгами',
   });
 
-  const [encore, highway, back] = await Album.create({
+  const [encore, highway, back, slim] = await Album.create({
     title: 'Encore',
     artist: Eminem,
-    year: '2004',
+    year: 2004,
     image: 'fixtures/Encore.jpg',
   }, {
     title: 'Highway to Hell',
     artist: ACDC,
-    year: '1979',
+    year: 1979,
     image: 'fixtures/Highway.jpeg',
   }, {
     title: 'Back in Black',
     artist: ACDC,
-    year: '1980',
+    year: 1980,
     image: 'fixtures/back.jpeg',
+  }, {
+    title: 'The Slim Shady LP',
+    artist: Eminem,
+    year: 1999,
+    image: 'fixtures/SlimShady.jpeg',
   });
 
   const [mockingbird] =await Track.create({
     name: 'Mockingbird',
     album: encore,
     duration: '4:11',
+    number: 5
+  }, {
+    name: 'Evil deeds',
+    album: encore,
+    duration: '4:20',
+    number: 1,
+  }, {
+    name: 'Never Enough',
+    album: encore,
+    duration: '2:40',
+    number: 2,
+  }, {
+    name: 'Yellow Brick Road',
+    album: encore,
+    duration: '5:46',
+    number: 3,
+  }, {
+    name: 'Like Toy Soldiers',
+    album: encore,
+    duration: '4:57',
+    number: 4
+  }, {
+    name: 'My Name Is',
+    album: slim,
+    duration: '4:28',
+    number: 1,
+  }, {
+    name: 'Guilty Conscience',
+    album: slim,
+    duration: '3:19',
+    number: 2,
+  }, {
+    name: 'Brain Damage',
+    album: slim,
+    duration: '3:46',
+    number: 3,
+  }, {
+    name: 'If I Had',
+    album: slim,
+    duration: '4:05',
+    number: 4,
+  }, {
+    name: 'My Fault',
+    album: slim,
+    duration: '4:01',
+    number: 5,
   }, {
     name: 'Highway to Hell',
     album: highway,
     duration: '3:28',
+    number: 1,
+  }, {
+    name: 'Girls Got Rhythm',
+    album: highway,
+    duration: '3:23',
+    number: 2,
+  }, {
+    name: 'Walk All Over You',
+    album: highway,
+    duration: '5:10',
+    number: 3,
+  }, {
+    name: 'Touch Too Much',
+    album: highway,
+    duration: '4:27',
+    number: 4,
+  }, {
+    name: 'Beating Around the Bush',
+    album: highway,
+    duration: '3:56',
+    number: 5,
   }, {
     name: 'Back in Black',
     album: back,
     duration: '4:16',
+    number: 1,
+  }, {
+    name: 'You Shook Me All Night Long',
+    album: back,
+    duration: '3:28',
+    number: 2,
+  }, {
+    name: 'Have a Drink on Me',
+    album: back,
+    duration: '3:57',
+    number: 3,
+  }, {
+    name: 'Shake a Leg',
+    album: back,
+    duration: '4:03',
+    number: 4,
+  }, {
+    name: 'Rock and Roll Ain’t Noise Pollution',
+    album: back,
+    duration: '4:12',
+    number: 5,
   });
 
   const user = new User({

@@ -11,7 +11,7 @@ tracksRouter.get('/', async (req, res, next) => {
     const {album: albumId, artist: artistId} = req.query;
     let tracks = await Track.find();
     if(albumId) {
-      tracks = await Track.find({album: albumId});
+      tracks = await Track.find({album: albumId}).sort({number: 1});
     }
 
     if(artistId) {
@@ -31,6 +31,7 @@ tracksRouter.post('/', async (req, res, next) => {
       album: req.body.album,
       name: req.body.name,
       duration: req.body.duration,
+      number: req.body.number,
     }
 
     const track = new Track(trackData);

@@ -9,7 +9,7 @@ export interface ArtistWithoutId {
 export interface AlbumWithoutId {
   artist: string;
   title: string;
-  year: string;
+  year: number;
   image: string | null;
 }
 
@@ -17,6 +17,7 @@ export interface TrackWithoutId {
   album: string;
   name: string;
   duration: string;
+  number: number;
 }
 
 export interface UserFields {
