@@ -32,7 +32,7 @@ albumsRouter.get('/', async (req, res, next) => {
         albums: countTrack,
       };
 
-      return res.send(response)
+      return res.send(response);
     }
 
     return res.send(albums);
@@ -70,7 +70,14 @@ albumsRouter.get('/:id', async (req, res, next) => {
       return res.status(404).send({error: 'Album not found'});
     }
 
-    return res.send(album);
+    const tracks = await Track.find({album: req.params.id}).sort({number: 1});
+
+    const result = {
+      album,
+      tracks,
+    }
+
+    return res.send(result);
   } catch (error) {
     next(error);
   }

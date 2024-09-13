@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout';
 import {Route, Routes} from 'react-router-dom';
 import Artists from './containers/Artists/Artists';
 import Albums from './containers/Albums/Albums';
+import Album from './containers/Album/Album';
 
 const App = () => {
 
@@ -11,6 +12,7 @@ const App = () => {
      <Routes>
        <Route path='/' element={<Artists />} />
        <Route path='/albums/:id' element={<Albums />} />
+       <Route path='/album/:id' element={<Album />} />
        <Route path='*' element={<div className="text-center mt-5"><strong>Данной страницы не найдено вернитесь
          пожалуйста обратно!</strong></div>} />
      </Routes>

@@ -19,7 +19,7 @@ const Albums = () => {
   return (
     <>
       {fetchLoading && <div className='text-center mt-5'><Spinner /></div>}
-      {albumsArtist ? (
+      {albumsArtist && (
       <>
         <h2 className='mt-4 text-center'>{albumsArtist.artist.name}</h2>
         {albumsArtist.albums.length > 0 ? (
@@ -32,9 +32,8 @@ const Albums = () => {
           <h3 className="text-center">У данного испольнителя ещё не добавлены альбомы</h3>
         )}
       </>
-      ) : (
-        <h3 className='mt-5 text-center'>Такого исполнителя нет</h3>
       )}
+      {!fetchLoading && !albumsArtist && <h3 className='mt-5 text-center'>Такого исполнителя нет</h3>}
     </>
 
   );

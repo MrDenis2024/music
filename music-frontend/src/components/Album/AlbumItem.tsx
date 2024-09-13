@@ -16,7 +16,7 @@ const AlbumItem: React.FC<Props> = ({album}) => {
   }
 
   return (
-    <Link to={`/tracks/${album._id}`} className="card text-decoration-none">
+    <Link to={`/album/${album._id}`} className="card text-decoration-none">
       <img src={albumImage} className="card-img-top" alt={album.title} style={{width: '275px', maxHeight: '183px'}} />
       <div className="card-body text-center">
         <h5 className="card-title">{album.title}</h5>
