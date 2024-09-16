@@ -1,34 +1,30 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from '../models/User';
 import TrackHistory from '../models/TrackHistory';
+import auth, {RequestWithUser} from '../middleware/auth';
+import Track from '../models/Track';
+import Album from '../models/Album';
 
 const trackHistoryRouter = express.Router();
 
-trackHistoryRouter.post('/track_history', async (req, res, next) => {
+trackHistoryRouter.post('/track_history', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const headerValue = req.get('Authorization');
+    const track = await Track.findById(req.body.track);
 
-    if(!headerValue) {
-      return res.status(401).send({error: 'Header Authorization not find'});
+    if(!track) {
+      return res.status(404).send({error: 'Track not found'});
     }
 
-    const [_bearer, token] =headerValue.split(' ');
+    const trackArtist = await Album.findById(track.album);
 
-    if(!token) {
-      return res.status(401).send({error: 'Token not found'});
-    }
-
-    const user = await User.findOne({token});
-
-
-    if(!user) {
-      return res.status(401).send({error: 'Unauthorized'});
+    if(!trackArtist) {
+      return res.status(404).send({error: 'Album not found'});
     }
 
     const trackHistory = new TrackHistory({
-      user: user._id,
+      user: req.user?._id,
       track: req.body.track,
+      artist: trackArtist.artist,
       datetime: new Date(),
     });
 

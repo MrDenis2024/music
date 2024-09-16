@@ -164,6 +164,7 @@ const run = async () => {
   const track = new TrackHistory({
     user: user._id,
     track: mockingbird,
+    artist: Eminem,
     datetime: new Date(),
   });
   await track.save();

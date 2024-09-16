@@ -70,3 +70,7 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface HistoryTrack {
+  track: string;
+}
