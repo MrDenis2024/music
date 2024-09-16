@@ -44,6 +44,11 @@ export interface RegisterMutation {
   password: string;
 }
 
+export interface LoginMutation {
+  username: string;
+  password: string;
+}
+
 export interface User {
   _id: string;
   username: string;
@@ -60,4 +65,8 @@ export interface ValidationError {
   message: string;
   name: string;
   _message: string;
+}
+
+export interface GlobalError {
+  error: string;
 }

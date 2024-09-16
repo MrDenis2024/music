@@ -59,7 +59,7 @@ const Register = () => {
         <div className={`${getFieldError('password') ? 'is-invalid' : ''}`}>
           <label htmlFor="password">Password</label>
           <input type="password" name="password" id="password" className="form-control" onChange={inputChangeHandler}
-                 value={state.password} required/>
+                 value={state.password} required autoComplete='new-password'/>
         </div>
         {getFieldError('password') && (
           <div className="invalid-feedback">

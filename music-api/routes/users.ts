@@ -37,7 +37,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
    const isMatch = await user.checkPassword(req.body.password);
 
    if(!isMatch) {
-     return res.status(400).send({error: 'Username or password not found111'});
+     return res.status(400).send({error: 'Username or password not found'});
    }
 
    user.generateToken();
