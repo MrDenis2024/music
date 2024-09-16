@@ -1,13 +1,11 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import Toolbar from '../Toolbar/Toolbar';
 
 const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
   return (
     <>
-      <header className='navbar navbar-dark bg-success'>
-        <div className='container'>
-          <NavLink to='/' className='navbar-brand'>Music</NavLink>
-        </div>
+      <header>
+        <Toolbar />
       </header>
       <main className='container flex-grow-1'>
         {children}
