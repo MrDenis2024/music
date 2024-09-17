@@ -32,7 +32,8 @@ tracksRouter.post('/', async (req, res, next) => {
       name: req.body.name,
       duration: req.body.duration,
       number: req.body.number,
-    }
+      youtubeLink: req.body.link ? req.body.link : null,
+    };
 
     const track = new Track(trackData);
     await track.save();

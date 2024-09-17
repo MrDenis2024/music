@@ -18,6 +18,7 @@ export interface TrackWithoutId {
   name: string;
   duration: string;
   number: number;
+  youtubeLink: string | null;
 }
 
 export interface UserFields {

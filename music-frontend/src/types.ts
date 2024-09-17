@@ -19,6 +19,7 @@ export interface Track {
   name: string;
   duration: string;
   number: number;
+  youtubeLink: string | null;
 }
 
 export interface AlbumWithCount extends Album {
