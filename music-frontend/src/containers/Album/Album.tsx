@@ -50,14 +50,14 @@ const Album = () => {
               <h4 className="mt-4 text-center">Tracks</h4>
               <table className='table table-striped align-middle w-75 mx-auto'>
                 <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Duration</th>
-                  {user && (
-                    <th>Actions</th>
-                  )}
-                </tr>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Duration</th>
+                    {user && (
+                      <th>Actions</th>
+                    )}
+                  </tr>
                 </thead>
                 <tbody>
                 {oneAlbum.tracks.map((track) => (

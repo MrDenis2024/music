@@ -12,6 +12,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectLoginError);
   const loading = useAppSelector(selectLoginLoading);
+
   const [state, setState] = useState<LoginMutation>({
     username: '',
     password: '',
@@ -51,14 +52,14 @@ const Login = () => {
         <div>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" id="username" className="form-control" onChange={inputChangeHandler}
-                 value={state.username} required autoComplete="new-username"/>
+                 value={state.username} required autoComplete="current-username"/>
         </div>
       </div>
       <div className="form-group mb-3">
         <div>
           <label htmlFor="password">Password</label>
           <input type="password" name="password" id="password" className="form-control" onChange={inputChangeHandler}
-                 value={state.password} required/>
+                 value={state.password} required autoComplete="new-password"/>
         </div>
       </div>
       <button type="submit" className="btn btn-primary w-100 mb-3" disabled={loading}>{loading && <ButtonSpinner/>}SIGN

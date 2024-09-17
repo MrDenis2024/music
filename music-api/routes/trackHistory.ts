@@ -9,6 +9,10 @@ const trackHistoryRouter = express.Router();
 
 trackHistoryRouter.post('/track_history', auth, async (req: RequestWithUser, res, next) => {
   try {
+    if(!req.body.track) {
+      return res.status(400).send({error: 'Track is required'});
+    }
+
     const track = await Track.findById(req.body.track);
 
     if(!track) {
@@ -36,6 +40,11 @@ trackHistoryRouter.post('/track_history', auth, async (req: RequestWithUser, res
     }
     next(error);
   }
-})
+});
+
+trackHistoryRouter.get('/track_history', auth, async (req: RequestWithUser, res, next) => {
+  const trackHistory = await TrackHistory.find({user: req.user?._id}).populate('track', '').populate('artist', '').sort({datetime: -1});
+  return res.send(trackHistory);
+});
 
 export default trackHistoryRouter;

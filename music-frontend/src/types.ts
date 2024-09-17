@@ -74,3 +74,11 @@ export interface GlobalError {
 export interface HistoryTrack {
   track: string;
 }
+
+export interface HistoryTracks {
+  _id: string;
+  user: string;
+  track: Track;
+  artist: Artist;
+  datetime: string;
+}

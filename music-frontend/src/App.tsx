@@ -6,6 +6,7 @@ import Albums from './containers/Albums/Albums';
 import Album from './containers/Album/Album';
 import Register from './containers/Register/Register';
 import Login from './containers/Login/Login';
+import TrackHistory from './containers/TrackHistory/TrackHistory';
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
        <Route path='/album/:id' element={<Album />} />
        <Route path='/register' element={<Register />} />
        <Route path='/login' element={<Login />} />
+       <Route path='/track_history' element={<TrackHistory />} />
        <Route path='*' element={<div className="text-center mt-5"><strong>Данной страницы не найдено вернитесь
          пожалуйста обратно!</strong></div>} />
      </Routes>
