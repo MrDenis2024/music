@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {LoginMutation,} from '../../types';
-import {login} from '../../sotre/usersThunks';
+import {login} from '../../store/usersThunks';
 import {toast} from 'react-toastify';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
-import {selectLoginError, selectLoginLoading} from '../../sotre/usersSlice';
+import {selectLoginError, selectLoginLoading} from '../../store/usersSlice';
 
 const Login = () => {
   const navigate = useNavigate();

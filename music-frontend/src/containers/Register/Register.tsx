@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {RegisterMutation} from '../../types';
 import {Link, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {register} from '../../sotre/usersThunks';
-import {selectRegisterError, selectRegisterLoading} from '../../sotre/usersSlice';
+import {register} from '../../store/usersThunks';
+import {selectRegisterError, selectRegisterLoading} from '../../store/usersSlice';
 import {toast} from 'react-toastify';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
 

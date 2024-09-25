@@ -1,12 +1,12 @@
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectUser} from '../../sotre/usersSlice';
+import {selectUser} from '../../store/usersSlice';
 import {Navigate} from 'react-router-dom';
 import {useEffect} from 'react';
-import {fetchTracks} from '../../sotre/trackHistoriesThunks';
+import {fetchTracks} from '../../store/trackHistoriesThunks';
 import {
   selectFetchLoadingTrackHistory,
   selectTrackHistories
-} from '../../sotre/trackHistoriesSlice';
+} from '../../store/trackHistoriesSlice';
 import dayjs from 'dayjs';
 import Spinner from '../../components/Spinner/Spinner';
 
@@ -53,7 +53,7 @@ const TrackHistory = () => {
           )}
         </div>
       ) : (
-        <Navigate to="/"/>
+        <Navigate to="/login"/>
       )}
     </>
   );

@@ -1,10 +1,10 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import {artistsReducer} from '../sotre/artistsSlice';
-import {albumsReducer} from '../sotre/albumsSlice';
-import {usersReducer} from '../sotre/usersSlice';
+import {artistsReducer} from '../store/artistsSlice';
+import {albumsReducer} from '../store/albumsSlice';
+import {usersReducer} from '../store/usersSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
-import {trackHistoriesReducer} from '../sotre/trackHistoriesSlice';
+import {trackHistoriesReducer} from '../store/trackHistoriesSlice';
 
 const usersPersistConfig = {
   key: 'music:users',

@@ -3,6 +3,7 @@ import Track from '../models/Track';
 import {TrackWithoutId} from '../types';
 import Album from '../models/Album';
 import mongoose from 'mongoose';
+import auth from '../middleware/auth';
 
 const tracksRouter = express.Router();
 
@@ -25,7 +26,7 @@ tracksRouter.get('/', async (req, res, next) => {
   }
 });
 
-tracksRouter.post('/', async (req, res, next) => {
+tracksRouter.post('/', auth, async (req, res, next) => {
   try {
     const trackData: TrackWithoutId = {
       album: req.body.album,

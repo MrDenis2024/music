@@ -1,6 +1,6 @@
 import {NavLink} from 'react-router-dom';
 import {useAppSelector} from '../../app/hooks';
-import {selectUser} from '../../sotre/usersSlice';
+import {selectUser} from '../../store/usersSlice';
 import UserMenu from './UserMenu';
 import AnonymousMenu from './AnonymousMenu';
 

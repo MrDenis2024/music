@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {useEffect} from 'react';
-import {fetchArtists} from '../../sotre/artistsThunks';
-import {selectorArtists, selectorFetchArtistsLoading} from '../../sotre/artistsSlice';
+import {fetchArtists} from '../../store/artistsThunks';
+import {selectorArtists, selectorFetchArtistsLoading} from '../../store/artistsSlice';
 import ArtistItem from '../../components/Artist/ArtistItem';
 import Spinner from '../../components/Spinner/Spinner';
 

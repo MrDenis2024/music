@@ -1,8 +1,8 @@
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {useParams} from 'react-router-dom';
 import {useEffect} from 'react';
-import {fetchAlbums} from '../../sotre/albumsThunks';
-import {selectorAlbums, selectorFetchAlbumsLoading} from '../../sotre/albumsSlice';
+import {fetchAlbums} from '../../store/albumsThunks';
+import {selectorAlbums, selectorFetchAlbumsLoading} from '../../store/albumsSlice';
 import AlbumItem from '../../components/Album/AlbumItem';
 import Spinner from '../../components/Spinner/Spinner';
 

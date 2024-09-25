@@ -3,6 +3,7 @@ import Artist from '../models/Artist';
 import mongoose from 'mongoose';
 import {ArtistWithoutId} from '../types';
 import {imagesUpload} from '../multer';
+import auth from '../middleware/auth';
 
 const artistsRouter = express.Router();
 
@@ -15,7 +16,7 @@ artistsRouter.get('/', async (req, res, next) => {
   }
 });
 
-artistsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
+artistsRouter.post('/', auth, imagesUpload.single('image'), async (req, res, next) => {
   try {
     const artistData: ArtistWithoutId = {
       name: req.body.name,

@@ -1,13 +1,13 @@
 import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectorAlbum, selectorFetchOneAlbum} from '../../sotre/albumsSlice';
+import {selectorAlbum, selectorFetchOneAlbum} from '../../store/albumsSlice';
 import {useEffect, useState} from 'react';
-import {fetchOneAlbum} from '../../sotre/albumsThunks';
+import {fetchOneAlbum} from '../../store/albumsThunks';
 import Spinner from '../../components/Spinner/Spinner';
-import {selectUser} from '../../sotre/usersSlice';
-import {addTrack} from '../../sotre/trackHistoriesThunks';
+import {selectUser} from '../../store/usersSlice';
+import {addTrack} from '../../store/trackHistoriesThunks';
 import {HistoryTrack, Track} from '../../types';
-import {selectLoadingTrackHistory} from '../../sotre/trackHistoriesSlice';
+import {selectLoadingTrackHistory} from '../../store/trackHistoriesSlice';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
 import {toast} from 'react-toastify';
 import Modal from '../../components/Modal/Modal';

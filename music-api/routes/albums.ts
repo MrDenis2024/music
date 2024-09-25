@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import {AlbumWithoutId} from '../types';
 import Track from '../models/Track';
 import Artist from '../models/Artist';
+import auth from '../middleware/auth';
 
 const albumsRouter = express.Router();
 
@@ -41,7 +42,7 @@ albumsRouter.get('/', async (req, res, next) => {
   }
 });
 
-albumsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
+albumsRouter.post('/', auth, imagesUpload.single('image'), async (req, res, next) => {
   try {
     const albumData: AlbumWithoutId = {
       artist: req.body.artist,
