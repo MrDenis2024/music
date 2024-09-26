@@ -1,9 +1,9 @@
 import express from 'express';
 import Track from '../models/Track';
-import {TrackWithoutId} from '../types';
 import Album from '../models/Album';
 import mongoose from 'mongoose';
-import auth from '../middleware/auth';
+import auth, {RequestWithUser} from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const tracksRouter = express.Router();
 
@@ -26,17 +26,16 @@ tracksRouter.get('/', async (req, res, next) => {
   }
 });
 
-tracksRouter.post('/', auth, async (req, res, next) => {
+tracksRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const trackData: TrackWithoutId = {
+    const track = new Track({
+      user: req.user?._id,
       album: req.body.album,
       name: req.body.name,
       duration: req.body.duration,
       number: req.body.number,
       youtubeLink: req.body.link ? req.body.link : null,
-    };
-
-    const track = new Track(trackData);
+    });
     await track.save();
 
     return res.send(track);
@@ -45,6 +44,41 @@ tracksRouter.post('/', auth, async (req, res, next) => {
       return res.status(400).send(error);
     }
     next(error);
+  }
+});
+
+tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const track = await Track.findById(req.params.id);
+
+    if(track === null) {
+      return res.status(404).send({error: 'Track not found'});
+    }
+
+    const updateTrack = await Track.findByIdAndUpdate(track._id, {$set: {isPublished: !track.isPublished}}, {new: true});
+
+    return res.send(updateTrack);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+tracksRouter.delete('/:id', auth, permit('admin', 'user'), async (req: RequestWithUser, res, next) => {
+  try {
+    const track = await Track.findById(req.params.id);
+
+    if(track === null) {
+      return res.status(404).send({error: 'Track not found'});
+    }
+
+    if (req.user?.role === 'admin' || (req.user?.role === 'user' && !track.isPublished && track.user.equals(req.user._id))) {
+      await Track.deleteOne({ _id: req.params.id });
+      return res.send({ message: 'Track deleted successfully' });
+    }
+
+    return res.status(403).send({ error: 'You cannot delete this track' });
+  } catch (error) {
+    return next(error);
   }
 });
 
