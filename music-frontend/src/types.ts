@@ -1,25 +1,49 @@
 export interface Artist {
   _id: string;
+  user: string;
   name: string;
   image: string | null;
   information: string | null;
 }
 
+export interface ArtistMutation {
+  name: string;
+  image: File | null;
+  information: string;
+}
+
 export interface Album {
   _id: string;
+  user: string;
   artist: string;
   title: string;
   year: number;
   image: string | null;
 }
 
+export interface AlbumMutation {
+  artist: string;
+  title: string;
+  year: string;
+  image: File | null;
+}
+
 export interface Track {
   _id: string;
+  user: string;
   album: string;
   name: string;
   duration: string;
   number: number;
   youtubeLink: string | null;
+}
+
+export interface TrackMutation {
+  album: string;
+  name: string;
+  duration: string;
+  number: string;
+  youtubeLink: string;
 }
 
 export interface AlbumWithCount extends Album {
@@ -54,6 +78,7 @@ export interface User {
   _id: string;
   username: string;
   token: string;
+  role: string;
 }
 
 export interface ValidationError {

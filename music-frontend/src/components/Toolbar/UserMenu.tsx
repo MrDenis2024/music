@@ -21,6 +21,9 @@ const UserMenu: React.FC<Props> = ({user}) => {
         Hello, {user.username}
       </button>
       <ul className="dropdown-menu">
+        <li><NavLink to='/new-artist' className="dropdown-item">Add artist</NavLink></li>
+        <li><NavLink to='/new-album' className="dropdown-item">Add album</NavLink></li>
+        <li><NavLink to='/new-track' className="dropdown-item">Add track</NavLink></li>
         <li><NavLink to='/track_history' className="dropdown-item">Track history</NavLink></li>
         <li>
           <hr className="dropdown-divider"/>
