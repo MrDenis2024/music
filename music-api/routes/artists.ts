@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import {imagesUpload} from '../multer';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import TrackHistory from '../models/TrackHistory';
 
 const artistsRouter = express.Router();
 
@@ -60,6 +61,7 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req: RequestW
 
     if (req.user?.role === 'admin' || (req.user?.role === 'user' && !artist.isPublished && artist.user.equals(req.user._id))) {
       await Artist.deleteOne({ _id: req.params.id });
+      await TrackHistory.deleteMany({artist: req.params.id});
       return res.send({ message: 'Artist deleted successfully' });
     }
 

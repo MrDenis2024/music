@@ -1,11 +1,12 @@
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {useParams} from 'react-router-dom';
 import {useEffect} from 'react';
-import {fetchAlbums} from '../../store/albumsThunks';
+import {changeAlbum, fetchAlbums} from '../../store/albumsThunks';
 import {selectorAlbums, selectorFetchAlbumsLoading} from '../../store/albumsSlice';
 import AlbumItem from '../../components/Album/AlbumItem';
 import Spinner from '../../components/Spinner/Spinner';
 import {selectUser} from '../../store/usersSlice';
+import {toast} from 'react-toastify';
 
 const Albums = () => {
   const {id} = useParams() as {id: string};
@@ -19,6 +20,16 @@ const Albums = () => {
     dispatch(fetchAlbums(id));
   }, [dispatch, id]);
 
+  const handelAlbumChange = async (albumId: string) => {
+    try {
+      await dispatch(changeAlbum(albumId)).unwrap();
+      toast.success('Album status successfully changed');
+      dispatch(fetchAlbums(id));
+    } catch (e) {
+      toast.error('There was an error changing album status');
+    }
+  };
+
   return (
     <>
       {fetchLoading && <div className='text-center mt-5'><Spinner /></div>}
@@ -28,7 +39,7 @@ const Albums = () => {
         {filterAlbums.length > 0 ? (
           <div className='mt-3 d-flex gap-4 flex-wrap'>
             {filterAlbums.map((album) => (
-              <AlbumItem key={album._id} album={album}/>
+              <AlbumItem key={album._id} album={album} handelAlbumChange={handelAlbumChange}/>
             ))}
           </div>
         ) : (

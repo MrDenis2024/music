@@ -1,7 +1,7 @@
 import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectorAlbum, selectorFetchOneAlbum} from '../../store/albumsSlice';
-import {useEffect, useState} from 'react';
+import  {useEffect, useState} from 'react';
 import {fetchOneAlbum} from '../../store/albumsThunks';
 import Spinner from '../../components/Spinner/Spinner';
 import {selectUser} from '../../store/usersSlice';
@@ -11,6 +11,8 @@ import {selectLoadingTrackHistory} from '../../store/trackHistoriesSlice';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
 import {toast} from 'react-toastify';
 import Modal from '../../components/Modal/Modal';
+import {changeTrack} from '../../store/tracksThunks';
+import {selectorLoadingChangeTrack} from '../../store/tracksSlice';
 
 const Album = () => {
   const {id} = useParams() as {id: string};
@@ -19,6 +21,7 @@ const Album = () => {
   const fetchLoading = useAppSelector(selectorFetchOneAlbum);
   const user = useAppSelector(selectUser);
   const trackLoading = useAppSelector(selectLoadingTrackHistory);
+  const trackChangeLoading = useAppSelector(selectorLoadingChangeTrack);
   const filteredTracks = oneAlbum?.tracks.filter(track => user?.role === 'admin' || track.isPublished || track.user === user?._id) || [];
 
   const [playingTrack, setPlayingTrack] = useState<string | null>(null);
@@ -42,6 +45,16 @@ const Album = () => {
       }
     } catch (e) {
       toast.error('Error recording grater in history');
+    }
+  };
+
+  const handelTrackChange = async (trackId: string) => {
+    try {
+      await dispatch(changeTrack(trackId)).unwrap();
+      toast.success('Track status successfully changed');
+      dispatch(fetchOneAlbum(id));
+    } catch (e) {
+      toast.error('There was an error changing track status');
     }
   };
 
@@ -87,8 +100,17 @@ const Album = () => {
                         </button>
                       </td>
                     )}
-                    {!track.isPublished && (
-                      <td className="border-0 text-secondary" style={{width: '120px'}}>Not published</td>
+                    {user && !track.isPublished && (
+                      <td className="border-0 text-secondary"
+                          style={{width: '120px'}}>Not published</td>
+                    )}
+                    {user?.role === 'admin' && !track.isPublished && (
+                      <td className='border-0' style={{width: '120px'}}>
+                        <button onClick={() => handelTrackChange(track._id)} className="btn btn-primary"
+                                disabled={trackChangeLoading ? trackChangeLoading === track._id : false}>{trackChangeLoading && trackChangeLoading === track._id && (
+                          <ButtonSpinner/>)}Publish
+                        </button>
+                      </td>
                     )}
                   </tr>
                 ))}

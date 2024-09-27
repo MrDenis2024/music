@@ -23,3 +23,7 @@ export const createAlbum = createAsyncThunk<void, AlbumMutation>('albums/create'
 
   await axiosApi.post('/albums', formData);
 });
+
+export const changeAlbum = createAsyncThunk<void, string>('albums/change', async (id) => {
+  await axiosApi.patch(`/albums/${id}/togglePublished`);
+});

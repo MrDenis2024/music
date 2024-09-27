@@ -1,12 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {creatTrack} from './tracksThunks';
+import {changeTrack, creatTrack} from './tracksThunks';
 
 export interface TracksState {
   createLoadingTrack: boolean;
+  loadingChangeTrack: false | string;
 }
 
 const initialState: TracksState = {
   createLoadingTrack: false,
+  loadingChangeTrack: false,
 };
 
 export const tracksSlice = createSlice({
@@ -21,13 +23,23 @@ export const tracksSlice = createSlice({
     }).addCase(creatTrack.rejected, (state: TracksState) => {
       state.createLoadingTrack = false;
     });
+
+    builder.addCase(changeTrack.pending, (state: TracksState, {meta: {arg: track}}) => {
+      state.loadingChangeTrack = track;
+    }).addCase(changeTrack.fulfilled, (state: TracksState) => {
+      state.loadingChangeTrack = false;
+    }).addCase(changeTrack.rejected, (state: TracksState) => {
+      state.loadingChangeTrack = false;
+    });
   },
   selectors: {
     selectorCreateLoadingTracks: (state: TracksState) => state.createLoadingTrack,
+    selectorLoadingChangeTrack: (state: TracksState) => state.loadingChangeTrack,
   }
 });
 
 export const tracksReducer = tracksSlice.reducer;
 export const {
   selectorCreateLoadingTracks,
+  selectorLoadingChangeTrack,
 } = tracksSlice.selectors;

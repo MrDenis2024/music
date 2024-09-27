@@ -6,6 +6,7 @@ import Track from '../models/Track';
 import Artist from '../models/Artist';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import TrackHistory from '../models/TrackHistory';
 
 const albumsRouter = express.Router();
 
@@ -108,7 +109,10 @@ albumsRouter.delete('/:id', auth, permit('admin', 'user'), async (req: RequestWi
 
     if(req.user?.role === 'admin' || (req.user?.role === 'user' && !album.isPublished && album.user.equals(req.user._id))) {
       await Album.deleteOne({_id: req.params.id});
-      return res.send('Album deleted successfully');
+      const tracks = await Track.find({ album: req.params.id });
+      const trackIds = tracks.map(track => track._id);
+      await TrackHistory.deleteMany({ track: { $in: trackIds } });
+      return res.send({message: 'Album deleted successfully'});
     }
 
     return res.status(403).send({error: 'You cannot delete this album'});

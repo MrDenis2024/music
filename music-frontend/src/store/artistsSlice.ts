@@ -1,17 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {createArtist, fetchArtists} from './artistsThunks';
+import {changeArtist, createArtist, fetchArtists} from './artistsThunks';
 import {Artist} from '../types';
 
 export interface ArtistsState {
   fetchArtistsLoading: boolean;
   artists: Artist[];
   createArtistLoading: boolean;
+  changeLoadingArtist: false | string;
 }
 
 const initialState: ArtistsState = {
   fetchArtistsLoading: false,
   artists: [],
   createArtistLoading: false,
+  changeLoadingArtist: false,
 };
 
 export const artistsSlice = createSlice({
@@ -35,11 +37,20 @@ export const artistsSlice = createSlice({
     }).addCase(createArtist.rejected, (state: ArtistsState) => {
       state.createArtistLoading = false;
     });
+
+    builder.addCase(changeArtist.pending, (state: ArtistsState, {meta: {arg: artist}}) => {
+      state.changeLoadingArtist = artist;
+    }).addCase(changeArtist.fulfilled, (state: ArtistsState) => {
+      state.changeLoadingArtist = false;
+    }).addCase(changeArtist.rejected, (state: ArtistsState) => {
+      state.changeLoadingArtist = false;
+    });
   },
   selectors: {
     selectorFetchArtistsLoading: (state: ArtistsState) => state.fetchArtistsLoading,
     selectorArtists: (state: ArtistsState) => state.artists,
     selectorCreateArtistLoading: (state: ArtistsState) => state.createArtistLoading,
+    selectorChangeLoadingArtist: (state: ArtistsState) => state.changeLoadingArtist,
   },
 });
 
@@ -48,4 +59,5 @@ export const {
   selectorFetchArtistsLoading,
   selectorArtists,
   selectorCreateArtistLoading,
+  selectorChangeLoadingArtist,
 } = artistsSlice.selectors;

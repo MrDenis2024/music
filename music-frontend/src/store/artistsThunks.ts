@@ -19,3 +19,7 @@ export const createArtist = createAsyncThunk<void, ArtistMutation>('artists/crea
 
   await axiosApi.post('/artists', formData);
 });
+
+export const changeArtist = createAsyncThunk<void, string>('artists/change', async (id) => {
+  await axiosApi.patch(`/artists/${id}/togglePublished`);
+});

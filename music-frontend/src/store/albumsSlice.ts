@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {AlbumsArtist, AlbumWithTracks} from '../types';
-import {createAlbum, fetchAlbums, fetchOneAlbum} from './albumsThunks';
+import { AlbumsArtist, AlbumWithTracks} from '../types';
+import {changeAlbum, createAlbum, fetchAlbums, fetchOneAlbum} from './albumsThunks';
 
 export interface AlbumsState {
   fetchAlbumsLoading: boolean;
@@ -8,6 +8,7 @@ export interface AlbumsState {
   createAlbumLoading: boolean;
   albums: AlbumsArtist | null;
   album: AlbumWithTracks | null;
+  changeAlbumLoading: false | string;
 }
 
 const initialState: AlbumsState = {
@@ -16,6 +17,7 @@ const initialState: AlbumsState = {
   createAlbumLoading: false,
   albums: null,
   album: null,
+  changeAlbumLoading: false,
 };
 
 export const albumsSlice = createSlice({
@@ -50,6 +52,14 @@ export const albumsSlice = createSlice({
     }).addCase(createAlbum.rejected, (state: AlbumsState) => {
       state.createAlbumLoading = false;
     });
+
+    builder.addCase(changeAlbum.pending, (state: AlbumsState, {meta: {arg: album}}) => {
+      state.changeAlbumLoading = album;
+    }).addCase(changeAlbum.fulfilled, (state: AlbumsState) => {
+      state.changeAlbumLoading = false;
+    }).addCase(changeAlbum.rejected, (state: AlbumsState) => {
+      state.changeAlbumLoading = false;
+    });
   },
   selectors: {
     selectorFetchAlbumsLoading: (state: AlbumsState) => state.fetchAlbumsLoading,
@@ -57,6 +67,7 @@ export const albumsSlice = createSlice({
     selectorFetchOneAlbum: (state: AlbumsState) => state.fetchOneAlbum,
     selectorAlbum: (state: AlbumsState) => state.album,
     selectorCreateAlbumLoading: (state: AlbumsState) => state.createAlbumLoading,
+    selectorChangeAlbumLoading: (state: AlbumsState) => state.changeAlbumLoading,
   },
 });
 
@@ -67,4 +78,5 @@ export const {
   selectorFetchOneAlbum,
   selectorAlbum,
   selectorCreateAlbumLoading,
+  selectorChangeAlbumLoading,
 } = albumsSlice.selectors;

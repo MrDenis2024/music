@@ -4,6 +4,7 @@ import Album from '../models/Album';
 import mongoose from 'mongoose';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import TrackHistory from '../models/TrackHistory';
 
 const tracksRouter = express.Router();
 
@@ -73,6 +74,7 @@ tracksRouter.delete('/:id', auth, permit('admin', 'user'), async (req: RequestWi
 
     if (req.user?.role === 'admin' || (req.user?.role === 'user' && !track.isPublished && track.user.equals(req.user._id))) {
       await Track.deleteOne({ _id: req.params.id });
+      await TrackHistory.deleteMany({track: req.params.id});
       return res.send({ message: 'Track deleted successfully' });
     }
 
