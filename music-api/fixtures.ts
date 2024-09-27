@@ -30,7 +30,7 @@ const run = async () => {
 
   const admin = new User({
     username: 'admin',
-    password: 'adminpassword',
+    password: 'adminQWERTY',
     role: 'admin',
   });
   admin.generateToken();
@@ -252,21 +252,21 @@ const run = async () => {
     number: 5,
     isPublished: true,
   }, {
-    user: admin._id,
+    user: user._id,
     name: 'Sehnsucht',
     album: sehnsucht,
     duration: '4:14',
     youtubeLink: 'https://www.youtube.com/watch?v=CcZHxomhwzg',
     number: 1,
   }, {
-    user: admin._id,
+    user: user._id,
     name: 'Engel',
     album: sehnsucht,
     duration: '4:25',
     youtubeLink: 'https://www.youtube.com/watch?v=x2rQzv8OWEY',
     number: 2,
   }, {
-    user: admin._id,
+    user: user._id,
     name: 'Du hast',
     album: sehnsucht,
     duration: '3:55',

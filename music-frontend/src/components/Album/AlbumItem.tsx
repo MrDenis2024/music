@@ -6,16 +6,18 @@ import {Link} from 'react-router-dom';
 import ButtonSpinner from '../Spinner/ButtonSpinner';
 import {useAppSelector} from '../../app/hooks';
 import {selectUser} from '../../store/usersSlice';
-import {selectorChangeAlbumLoading} from '../../store/albumsSlice';
+import {selectorChangeAlbumLoading, selectorDeleteAlbumLoading} from '../../store/albumsSlice';
 
 interface Props {
   album: AlbumWithCount;
   handelAlbumChange: (id: string) => void;
+  handelAlbumDelete: (id: string) => void;
 }
 
-const AlbumItem: React.FC<Props> = ({album, handelAlbumChange}) => {
+const AlbumItem: React.FC<Props> = ({album, handelAlbumChange, handelAlbumDelete}) => {
   const user = useAppSelector(selectUser);
   const albumChangeLoading = useAppSelector(selectorChangeAlbumLoading);
+  const albumDeleteLoading = useAppSelector(selectorDeleteAlbumLoading);
   let albumImage = imageNotFound;
 
   if(album.image) {
@@ -37,14 +39,22 @@ const AlbumItem: React.FC<Props> = ({album, handelAlbumChange}) => {
           </div>
         </div>
       </Link>
-      <div className='d-flex justify-content-center mb-3'>
-        {user?.role === 'admin' && !album.isPublished && (
-          <button onClick={() => handelAlbumChange(album._id)} className="btn btn-primary"
-                  disabled={albumChangeLoading ? albumChangeLoading === album._id : false}>{albumChangeLoading && albumChangeLoading === album._id && (
-            <ButtonSpinner/>)} Publish
-          </button>
-        )}
-      </div>
+      {user && (user.role === 'admin' || user._id === album.user) && (
+        <div className='d-flex justify-content-center gap-5 mb-3'>
+          {user?.role === 'admin' && !album.isPublished && (
+            <button onClick={() => handelAlbumChange(album._id)} className="btn btn-primary"
+                    disabled={albumChangeLoading ? albumChangeLoading === album._id : false}>{albumChangeLoading && albumChangeLoading === album._id && (
+              <ButtonSpinner/>)} Publish
+            </button>
+          )}
+          {(user?.role === 'admin' || (user?._id === album.user && !album.isPublished)) && (
+            <button onClick={() => handelAlbumDelete(album._id)} className="btn btn-danger"
+                    disabled={albumDeleteLoading ? albumDeleteLoading === album._id : false}>{albumDeleteLoading && albumDeleteLoading === album._id && (
+              <ButtonSpinner/>)}Delete
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

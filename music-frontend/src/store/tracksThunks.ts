@@ -9,3 +9,7 @@ export const creatTrack = createAsyncThunk<void, TrackMutation>('tracks/create',
 export const changeTrack = createAsyncThunk<void, string>('tracks/change', async (id) => {
   await axiosApi.patch(`/tracks/${id}/togglePublished`);
 });
+
+export const deleteTrack = createAsyncThunk<void, string>('tracks/delete', async (id) => {
+  await axiosApi.delete(`/tracks/${id}`);
+});

@@ -23,3 +23,7 @@ export const createArtist = createAsyncThunk<void, ArtistMutation>('artists/crea
 export const changeArtist = createAsyncThunk<void, string>('artists/change', async (id) => {
   await axiosApi.patch(`/artists/${id}/togglePublished`);
 });
+
+export const deleteArtist = createAsyncThunk<void, string>('artists/delete', async (id) => {
+  await axiosApi.delete(`/artists/${id}`);
+});

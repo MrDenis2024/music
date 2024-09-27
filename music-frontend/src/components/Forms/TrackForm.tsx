@@ -7,6 +7,7 @@ import Spinner from '../Spinner/Spinner';
 import ButtonSpinner from '../Spinner/ButtonSpinner';
 import {fetchAlbums} from '../../store/albumsThunks';
 import {selectorAlbums, selectorFetchAlbumsLoading} from '../../store/albumsSlice';
+import {selectUser} from '../../store/usersSlice';
 
 interface Props {
   onSubmit: (track: TrackMutation) => void;
@@ -19,6 +20,7 @@ const TrackForm: React.FC<Props> = ({onSubmit, loading}) => {
   const artistsLoading = useAppSelector(selectorFetchArtistsLoading);
   const artistAlbums = useAppSelector(selectorAlbums);
   const albumsLoading = useAppSelector(selectorFetchAlbumsLoading);
+  const user = useAppSelector(selectUser);
   const [track, setTrack] = useState<TrackMutation>({
     album: '',
     name: '',
@@ -69,7 +71,9 @@ const TrackForm: React.FC<Props> = ({onSubmit, loading}) => {
                     required>
               <option value="" disabled>Select artist</option>
               {artists.map((artist) => (
-                <option key={artist._id} value={artist._id}>{artist.name}</option>
+                (user?.role === 'admin' || artist.isPublished || artist.user === user?._id) && (
+                  <option key={artist._id} value={artist._id}>{artist.name}</option>
+                )
               ))}
             </select>
           </>
@@ -85,7 +89,9 @@ const TrackForm: React.FC<Props> = ({onSubmit, loading}) => {
                     required>
               <option value="" disabled>{artistId ? ('Select album') : ('Choose an artist first')}</option>
               {artistAlbums?.albums.map((album) => (
-                <option key={album._id} value={album._id}>{album.title}</option>
+                (user?.role === 'admin' || album.isPublished || album.user === user?._id) && (
+                  <option key={album._id} value={album._id}>{album.title}</option>
+                )
               ))}
             </select>
           </>
@@ -109,7 +115,7 @@ const TrackForm: React.FC<Props> = ({onSubmit, loading}) => {
         </div>
       </div>
       <div className='form-group mb-3'>
-        <label htmlFor='youtubeLink' className='mb-1'>Youtube Link</label>
+        <label htmlFor='youtubeLink' className='mb-1'>Youtube link:</label>
         <input type='url' name='youtubeLink' id='youtubeLink' className='form-control' value={track.youtubeLink}
                onChange={inputChangeHandler}/>
       </div>

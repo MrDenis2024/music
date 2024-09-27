@@ -6,6 +6,7 @@ import {fetchArtists} from '../../store/artistsThunks';
 import FileInput from './FileInput';
 import ButtonSpinner from '../Spinner/ButtonSpinner';
 import Spinner from '../Spinner/Spinner';
+import {selectUser} from '../../store/usersSlice';
 
 interface Props {
   onSubmit: (album: AlbumMutation) => void;
@@ -14,6 +15,7 @@ interface Props {
 
 const AlbumForm: React.FC<Props> = ({onSubmit, loading}) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const artists = useAppSelector(selectorArtists);
   const fetchArtistsLoading = useAppSelector(selectorFetchArtistsLoading);
   const [album, setAlbum] = useState<AlbumMutation>({
@@ -64,14 +66,16 @@ const AlbumForm: React.FC<Props> = ({onSubmit, loading}) => {
                     value={album.artist} required>
               <option value="" disabled>Select artist</option>
               {artists.map((artist) => (
-                <option key={artist._id} value={artist._id}>{artist.name}</option>
-              ))}
+                (user?.role === 'admin' || artist.isPublished || artist.user === user?._id) && (
+                  <option key={artist._id} value={artist._id}>{artist.name}</option>
+                )
+                ))}
             </select>
           </>
         )}
       </div>
       <div className="form-group mb-3">
-        <label htmlFor="title" className="mb-1">Title:</label>
+        <label htmlFor="title" className="mb-1">Name album:</label>
         <input type="text" name="title" id="title" className="form-control" value={album.title}
                onChange={inputChangeHandler} required/>
       </div>

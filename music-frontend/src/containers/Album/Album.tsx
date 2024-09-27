@@ -1,7 +1,7 @@
 import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectorAlbum, selectorFetchOneAlbum} from '../../store/albumsSlice';
-import  {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {fetchOneAlbum} from '../../store/albumsThunks';
 import Spinner from '../../components/Spinner/Spinner';
 import {selectUser} from '../../store/usersSlice';
@@ -11,8 +11,8 @@ import {selectLoadingTrackHistory} from '../../store/trackHistoriesSlice';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
 import {toast} from 'react-toastify';
 import Modal from '../../components/Modal/Modal';
-import {changeTrack} from '../../store/tracksThunks';
-import {selectorLoadingChangeTrack} from '../../store/tracksSlice';
+import {changeTrack, deleteTrack} from '../../store/tracksThunks';
+import {selectorDeleteTrackLoading, selectorLoadingChangeTrack} from '../../store/tracksSlice';
 
 const Album = () => {
   const {id} = useParams() as {id: string};
@@ -22,6 +22,7 @@ const Album = () => {
   const user = useAppSelector(selectUser);
   const trackLoading = useAppSelector(selectLoadingTrackHistory);
   const trackChangeLoading = useAppSelector(selectorLoadingChangeTrack);
+  const deleteTrackLoading = useAppSelector(selectorDeleteTrackLoading);
   const filteredTracks = oneAlbum?.tracks.filter(track => user?.role === 'admin' || track.isPublished || track.user === user?._id) || [];
 
   const [playingTrack, setPlayingTrack] = useState<string | null>(null);
@@ -58,6 +59,18 @@ const Album = () => {
     }
   };
 
+  const handelTrackDelete = async (trackId: string) => {
+    try {
+      if(window.confirm('Вы точно хотите удалить данный трэк?')) {
+        await dispatch(deleteTrack(trackId)).unwrap();
+        dispatch(fetchOneAlbum(id));
+        toast.success('Track successfully delete');
+      }
+    } catch (e) {
+      toast.error('There was an error delete track');
+    }
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setPlayingTrack(null);
@@ -82,7 +95,7 @@ const Album = () => {
                     <th>Name</th>
                     <th>Duration</th>
                     {user && (
-                      <th>Actions</th>
+                      <th className='text-center' style={{width: '490px'}}>Actions</th>
                     )}
                   </tr>
                 </thead>
@@ -93,23 +106,26 @@ const Album = () => {
                     <td>{track.name}</td>
                     <td style={{width: '200px'}}>{track.duration} minutes</td>
                     {user && (
-                      <td style={{width: '100px'}}>
+                      <td className={`${(user.role === 'admin' || (user._id === track.user && !track.isPublished)) ? 'd-flex gap-3 align-items-center justify-content-center': 'text-center'}`} style={{maxWidth: '490px'}}>
                         <button onClick={() => buttonHandelClick(track)} className="btn btn-primary"
                                 disabled={trackLoading ? trackLoading === track._id : false}>{trackLoading && trackLoading === track._id && (
                           <ButtonSpinner/>)}Play
                         </button>
-                      </td>
-                    )}
-                    {user && !track.isPublished && (
-                      <td className="border-0 text-secondary"
-                          style={{width: '120px'}}>Not published</td>
-                    )}
-                    {user?.role === 'admin' && !track.isPublished && (
-                      <td className='border-0' style={{width: '120px'}}>
-                        <button onClick={() => handelTrackChange(track._id)} className="btn btn-primary"
-                                disabled={trackChangeLoading ? trackChangeLoading === track._id : false}>{trackChangeLoading && trackChangeLoading === track._id && (
-                          <ButtonSpinner/>)}Publish
-                        </button>
+                        {(user.role === 'admin' || (user._id === track.user && !track.isPublished)) && (
+                          <button onClick={() => handelTrackDelete(track._id)} className="btn btn-danger"
+                                  disabled={deleteTrackLoading ? deleteTrackLoading === track._id : false}>{deleteTrackLoading && deleteTrackLoading === track._id && (
+                            <ButtonSpinner/>)}Delete
+                          </button>
+                        )}
+                        {user?.role === 'admin' && !track.isPublished && (
+                          <button onClick={() => handelTrackChange(track._id)} className="btn btn-primary"
+                                  disabled={trackChangeLoading ? trackChangeLoading === track._id : false}>{trackChangeLoading && trackChangeLoading === track._id && (
+                            <ButtonSpinner/>)}Publish
+                          </button>
+                        )}
+                        {!track.isPublished && (
+                          <span className='text-secondary'>Not published</span>
+                        )}
                       </td>
                     )}
                   </tr>
