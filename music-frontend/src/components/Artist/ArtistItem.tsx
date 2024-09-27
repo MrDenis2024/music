@@ -18,8 +18,11 @@ const ArtistItem: React.FC<Props> = ({artist}) => {
   return (
     <Link to={`/albums/${artist._id}`} className="card text-decoration-none">
       <img src={artistImage} className="card-img-top" alt={artist.name} style={{width: '275px', maxHeight: '183px'}} />
-      <div className="card-body">
-        <h5 className="card-title text-center">{artist.name}</h5>
+      <div className="card-body text-center">
+        <h5 className="card-title">{artist.name}</h5>
+        {!artist.isPublished && (
+          <span className='text-secondary'>Not published</span>
+        )}
       </div>
     </Link>
   );

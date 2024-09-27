@@ -23,6 +23,9 @@ const AlbumItem: React.FC<Props> = ({album}) => {
         <div className='d-flex flex-column'>
           <span>Year of release <strong>{album.year}</strong> year</span>
           <span>Number of records: <strong>{album.tracks}</strong></span>
+          {!album.isPublished && (
+            <span className='text-secondary'>Not published</span>
+          )}
         </div>
       </div>
     </Link>

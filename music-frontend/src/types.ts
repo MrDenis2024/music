@@ -4,6 +4,7 @@ export interface Artist {
   name: string;
   image: string | null;
   information: string | null;
+  isPublished: boolean;
 }
 
 export interface ArtistMutation {
@@ -19,6 +20,7 @@ export interface Album {
   title: string;
   year: number;
   image: string | null;
+  isPublished: boolean;
 }
 
 export interface AlbumMutation {
@@ -36,6 +38,7 @@ export interface Track {
   duration: string;
   number: number;
   youtubeLink: string | null;
+  isPublished: boolean;
 }
 
 export interface TrackMutation {

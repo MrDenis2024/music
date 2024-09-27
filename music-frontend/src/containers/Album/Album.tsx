@@ -19,6 +19,7 @@ const Album = () => {
   const fetchLoading = useAppSelector(selectorFetchOneAlbum);
   const user = useAppSelector(selectUser);
   const trackLoading = useAppSelector(selectLoadingTrackHistory);
+  const filteredTracks = oneAlbum?.tracks.filter(track => user?.role === 'admin' || track.isPublished || track.user === user?._id) || [];
 
   const [playingTrack, setPlayingTrack] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -58,7 +59,7 @@ const Album = () => {
             <h2>{oneAlbum.album.artist.name}</h2>
             <h3 className='mt-3'>Album: {oneAlbum.album.title}</h3>
           </div>
-          {oneAlbum.tracks.length > 0 ? (
+          {filteredTracks.length > 0 ? (
             <>
               <h4 className="mt-4 text-center">Tracks</h4>
               <table className='table table-striped align-middle w-75 mx-auto'>
@@ -73,7 +74,7 @@ const Album = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {oneAlbum.tracks.map((track) => (
+                {filteredTracks.map((track) => (
                   <tr key={track._id}>
                     <td>{track.number}</td>
                     <td>{track.name}</td>
@@ -85,6 +86,9 @@ const Album = () => {
                           <ButtonSpinner/>)}Play
                         </button>
                       </td>
+                    )}
+                    {!track.isPublished && (
+                      <td className="border-0 text-secondary" style={{width: '120px'}}>Not published</td>
                     )}
                   </tr>
                 ))}

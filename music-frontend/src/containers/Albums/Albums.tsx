@@ -5,12 +5,15 @@ import {fetchAlbums} from '../../store/albumsThunks';
 import {selectorAlbums, selectorFetchAlbumsLoading} from '../../store/albumsSlice';
 import AlbumItem from '../../components/Album/AlbumItem';
 import Spinner from '../../components/Spinner/Spinner';
+import {selectUser} from '../../store/usersSlice';
 
 const Albums = () => {
   const {id} = useParams() as {id: string};
   const dispatch = useAppDispatch();
   const albumsArtist = useAppSelector(selectorAlbums);
   const fetchLoading = useAppSelector(selectorFetchAlbumsLoading);
+  const user = useAppSelector(selectUser);
+  const filterAlbums = albumsArtist?.albums.filter(album => (user?.role === 'admin' || album.isPublished || album.user === user?._id)) || [];
 
   useEffect(() => {
     dispatch(fetchAlbums(id));
@@ -22,9 +25,9 @@ const Albums = () => {
       {albumsArtist && (
       <>
         <h2 className='mt-4 text-center'>{albumsArtist.artist.name}</h2>
-        {albumsArtist.albums.length > 0 ? (
+        {filterAlbums.length > 0 ? (
           <div className='mt-3 d-flex gap-4 flex-wrap'>
-            {albumsArtist.albums.map((album) => (
+            {filterAlbums.map((album) => (
               <AlbumItem key={album._id} album={album}/>
             ))}
           </div>
