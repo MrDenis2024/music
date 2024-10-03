@@ -1,4 +1,5 @@
 import React, {useRef, useState} from 'react';
+import {useLocation} from 'react-router-dom';
 
 interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -7,6 +8,7 @@ interface Props {
 const FileInput: React.FC<Props> = ({onChange}) => {
   const [filename, setFilename] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const location = useLocation();
 
   const activateInput = () => {
     if(inputRef.current) {
@@ -28,10 +30,10 @@ const FileInput: React.FC<Props> = ({onChange}) => {
       <div className='d-flex flex-column'>
         <input type='file' style={{display: 'none'}} ref={inputRef} name='image' onChange={onFileChange}/>
         <div className='mb-1'>
-          <label htmlFor="image">Image:</label>
+          <label htmlFor="image">{location.pathname === '/register' ? 'Avatar:' : 'Image:'}</label>
         </div>
         <div className='d-flex'>
-          <input type="text" id="image" className='form-control' value={filename} onClick={activateInput} readOnly/>
+          <input type="text" id="image" className={`form-control ${location.pathname === '/register' ? '' : 'w-25'}`} value={filename} onClick={activateInput} readOnly/>
           <button type='button' className='btn btn-primary ms-5' onClick={activateInput}>Browse</button>
         </div>
       </div>

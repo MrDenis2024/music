@@ -1,5 +1,8 @@
 import path from 'path';
 import {CorsOptions} from 'cors';
+import {configDotenv} from 'dotenv';
+
+configDotenv();
 
 const rootPath = __dirname;
 
@@ -19,6 +22,10 @@ const config = {
   publicPath: path.join(rootPath, 'public'),
   corsOptions,
   database: 'mongodb://localhost/music',
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  },
 };
 
 export default config;
