@@ -6,6 +6,7 @@ import {register} from '../../store/usersThunks';
 import {selectRegisterError, selectRegisterLoading} from '../../store/usersSlice';
 import {toast} from 'react-toastify';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
+import FileInput from '../../components/Forms/FileInput';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Register = () => {
   const [state, setState] = useState<RegisterMutation>({
     username: '',
     password: '',
+    displayName: '',
+    image: null,
   });
 
   const getFieldError = (fieldName: string) => {
@@ -38,6 +41,16 @@ const Register = () => {
     } catch (e) {
       toast.error('There was a registration error');
     }
+  };
+
+  const fileInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = event.target;
+    const value = files && files[0] ? files[0] : null;
+
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   return (
@@ -67,7 +80,22 @@ const Register = () => {
           </div>
         )}
       </div>
-      <button type="submit" className="btn btn-primary w-100 mb-3" disabled={loading}>{loading && <ButtonSpinner />}SIGN UP</button>
+      <div className="form-group mb-3">
+        <div className={`${getFieldError('displayName') ? 'is-invalid' : ''}`}>
+          <label htmlFor="displayName">Display name</label>
+          <input type="displayName" name="displayName" id="displayName" className="form-control" onChange={inputChangeHandler}
+                 value={state.displayName} required/>
+        </div>
+        {getFieldError('displayName') && (
+          <div className="invalid-feedback">
+            {getFieldError('displayName')}
+          </div>
+        )}
+      </div>
+      <FileInput onChange={fileInputChangeHandler}/>
+      <button type="submit" className="btn btn-primary w-100 mb-3" disabled={loading}>{loading && <ButtonSpinner/>}SIGN
+        UP
+      </button>
       <Link to='/login'>Already have an account? Sign in</Link>
     </form>
   );

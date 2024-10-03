@@ -70,6 +70,8 @@ export interface AlbumWithTracks {
 export interface RegisterMutation {
   username: string;
   password: string;
+  displayName: string;
+  image: File | null;
 }
 
 export interface LoginMutation {
@@ -82,6 +84,8 @@ export interface User {
   username: string;
   token: string;
   role: string;
+  displayName: string;
+  avatar: string | null;
 }
 
 export interface ValidationError {

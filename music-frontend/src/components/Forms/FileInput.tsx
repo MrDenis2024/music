@@ -31,7 +31,7 @@ const FileInput: React.FC<Props> = ({onChange}) => {
           <label htmlFor="image">Image:</label>
         </div>
         <div className='d-flex'>
-          <input type="text" id="image" className='form-control w-25' value={filename} onClick={activateInput} readOnly/>
+          <input type="text" id="image" className='form-control' value={filename} onClick={activateInput} readOnly/>
           <button type='button' className='btn btn-primary ms-5' onClick={activateInput}>Browse</button>
         </div>
       </div>
