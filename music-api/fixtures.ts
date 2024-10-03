@@ -24,6 +24,8 @@ const run = async () => {
     username: 'user',
     password: 'newpassword',
     role: 'user',
+    displayName: 'Den',
+    avatar: 'fixtures/avatar.jpeg',
   });
   user.generateToken();
   await user.save();
@@ -32,6 +34,8 @@ const run = async () => {
     username: 'admin',
     password: 'adminQWERTY',
     role: 'admin',
+    displayName: 'Anton',
+    avatar: null,
   });
   admin.generateToken();
   await admin.save();
