@@ -58,7 +58,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
 usersRouter.post('/google', async (req, res, next) => {
   try {
     const ticket = await googleClient.verifyIdToken({
-      idToken: req.body.credentials,
+      idToken: req.body.credential,
       audience: config.google.clientId,
     });
 
@@ -81,7 +81,7 @@ usersRouter.post('/google', async (req, res, next) => {
         password: crypto.randomUUID(),
         googleID: id,
         displayName,
-        avatar,
+        avatar: avatar ? avatar : null,
       });
     }
     user.generateToken();

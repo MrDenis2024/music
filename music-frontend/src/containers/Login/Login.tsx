@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {LoginMutation,} from '../../types';
-import {login} from '../../store/usersThunks';
+import {googleLogin, login} from '../../store/usersThunks';
 import {toast} from 'react-toastify';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
 import {selectLoginError, selectLoginLoading} from '../../store/usersSlice';
+import {CredentialResponse, GoogleLogin} from '@react-oauth/google';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,9 +38,24 @@ const Login = () => {
     }
   };
 
+  const googleLoginHandler = async (credentialResponse: CredentialResponse) => {
+    try {
+      if(credentialResponse.credential) {
+        await dispatch(googleLogin(credentialResponse.credential)).unwrap();
+        navigate('/');
+        toast.success('Login was successful');
+      }
+    } catch (e) {
+      toast.error('There was a login error');
+    }
+  };
+
   return (
     <form className='mt-5 w-25 mx-auto' onSubmit={submitFormHandler}>
       <h4 className='text-center'>Sign in</h4>
+      <div className='d-flex justify-content-center mb-2'>
+        <GoogleLogin onSuccess={googleLoginHandler}/>
+      </div>
       {error && (
         <div className="alert alert-danger d-flex align-items-center">
           <i className="bi bi-exclamation-circle" style={{color: 'red'}}></i>
