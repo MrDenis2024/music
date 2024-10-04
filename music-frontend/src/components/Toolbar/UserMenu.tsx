@@ -3,6 +3,8 @@ import {User} from '../../types';
 import {NavLink} from 'react-router-dom';
 import {useAppDispatch} from '../../app/hooks';
 import {logout} from '../../store/usersThunks';
+import notPhoto from '../../assests/images/notPhoto.png';
+import {API_URL} from '../../constants';
 
 interface Props {
   user: User;
@@ -10,7 +12,15 @@ interface Props {
 
 const UserMenu: React.FC<Props> = ({user}) => {
   const dispatch = useAppDispatch();
+  let userPhoto = notPhoto;
 
+  if(user.avatar) {
+    if(user.avatar.startsWith('http')) {
+      userPhoto = user.avatar;
+    } else {
+      userPhoto = `${API_URL}/${user.avatar}`;
+    }
+  }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -19,6 +29,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
   return (
     <div className="dropdown">
       <button className="dropdown-toggle btn btn-success d-flex align-items-center p-0" data-bs-toggle="dropdown">
+        <img src={userPhoto} alt={user.username} className="rounded-5 me-2" style={{width: '40px'}}/>
         Hello, {user.displayName}
       </button>
       <ul className="dropdown-menu">
